@@ -1,0 +1,97 @@
+server:
+  port: 8071
+
+spring:
+  application:
+    name: around-me-authorization
+  datasource:
+    url: jdbc:mariadb://localhost:3306/am_user
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: true
+  #        show-sql: true
+  redis:
+    port: 6379
+    host: 3.34.242.210
+    password: test7144
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+# hystrix
+hystrix:
+  metrics:
+    polling-interval-ms: 10000 # default 10000 - \uD638\uCD9C \uD1B5\uACC4 \uAE30\uC900 \uC2DC\uAC04
+  command:
+    around-me-common:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 # default 1000
+      circuitBreaker:
+        requestVolumeThreshold: 20 # default 20 - \uC2DC\uB3C4 \uD69F\uC218
+        errorThresholdPercentage: 10 # default 50 - \uC5D0\uB7EC %
+        sleepWindowInMilliseconds: 5000 # default 5000 - \uC11C\uD0B7 \uC624\uD508 \uC2DC\uAC04
+    around-me-user:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 # default 1000
+      circuitBreaker:
+        requestVolumeThreshold: 20 # default 20 - \uC2DC\uB3C4 \uD69F\uC218
+        errorThresholdPercentage: 10 # default 50 - \uC5D0\uB7EC %
+        sleepWindowInMilliseconds: 5000 # default 5000 - \uC11C\uD0B7 \uC624\uD508 \uC2DC\uAC04
+    around-me-store:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 # default 1000
+      circuitBreaker:
+        requestVolumeThreshold: 20 # default 20 - \uC2DC\uB3C4 \uD69F\uC218
+        errorThresholdPercentage: 10 # default 50 - \uC5D0\uB7EC %
+        sleepWindowInMilliseconds: 5000 # default 5000 - \uC11C\uD0B7 \uC624\uD508 \uC2DC\uAC04
+
+around-me-authorization:
+  ribbon:
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 1
+
+around-me-authentication:
+  ribbon:
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 1
+
+around-me-user:
+  ribbon:
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 1
+
+around-me-common:
+  ribbon:
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 1
+
+around-me-store:
+  ribbon:
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 1
+
+eureka:
+  instance:
+    non-secure-port: ${server.port}
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka  # default address
+
+jwtTokenLogin: m86XSjBBxUo+1Q6aAKdOzjOzWsRfXJhPFKNDPLk+Dnc=

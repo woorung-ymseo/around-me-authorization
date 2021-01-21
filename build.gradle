@@ -1,0 +1,81 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+group = 'com.around.me.authentication'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven() {
+        url ("http://3.35.83.253:8081/repository/maven-public/")
+        credentials{
+            username "admin"
+            password "1234"
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
+
+    // around-me-support
+    //implementation 'com.around.me.support:around-me-support:0.0.1'
+
+    // [CLOUD] hystrix
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.2.RELEASE'
+
+    // [CLOUD] ribbon
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: '2.2.2.RELEASE'
+    compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.5.RELEASE'
+
+    // [CLOUD] eureka client
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '2.2.2.RELEASE'
+
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    compile group: 'org.apache.commons', name: 'commons-lang3'
+
+    // SWAGGER
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.1'
+    runtime('io.jsonwebtoken:jjwt-impl:0.11.1', 'io.jsonwebtoken:jjwt-jackson:0.11.1')
+
+    // spring-data-redis
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.3.3.RELEASE'
+
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
